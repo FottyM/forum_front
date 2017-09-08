@@ -1,114 +1,65 @@
 <template>
-  <v-app light>
-    <v-navigation-drawer
-      persistent
-      :mini-variant="miniVariant"
-      :clipped="clipped"
-      v-model="drawer"
-      enable-resize-watcher
-    >
-      <v-list>
-        <v-list-tile
-          value="true"
-          v-for="(item, i) in items"
-          :key="i"
-        >
-          <v-list-tile-action>
-            <v-icon light v-html="item.icon"></v-icon>
-          </v-list-tile-action>
-          <v-list-tile-content>
-            <v-list-tile-title v-text="item.title"></v-list-tile-title>
-          </v-list-tile-content>
-        </v-list-tile>
-      </v-list>
-    </v-navigation-drawer>
-    <v-toolbar fixed>
-      <v-toolbar-side-icon @click.stop="drawer = !drawer" light></v-toolbar-side-icon>
-      <v-btn
-        icon
-        light
-        @click.stop="miniVariant = !miniVariant"
-      >
-        <v-icon v-html="miniVariant ? 'chevron_right' : 'chevron_left'"></v-icon>
+<v-app light>
+  <!--Navigation drawer-->
+  <v-navigation-drawer persistent v-model="drawer" light enable-resize-watcher overflow>
+    <v-list>
+      <v-list-tile v-for="item in menuItems" :key=" item.title ">
+        <v-list-tile-action>
+          <v-icon> {{ item.icon }} </v-icon>
+        </v-list-tile-action>
+        <v-list-tile-content> {{ item.title }} </v-list-tile-content>
+      </v-list-tile>
+    </v-list>
+  </v-navigation-drawer>
+  <!--End of navigation drawer -->
+
+  <!--Toolbar starts here-->
+  <v-toolbar  dark class="primary">
+    <v-toolbar-side-icon v-on:click.stop="drawer = !drawer" class="hidden-sm-and-up"></v-toolbar-side-icon>
+    <v-toolbar-title>
+      <v-icon dark left>forum</v-icon>
+      Tikvaa-Forum
+    </v-toolbar-title>
+    <v-spacer></v-spacer>
+    <v-toolbar-items class="hidden-xs-only">
+      <v-btn flat v-for="item in menuItems" :key="item.title">
+        <v-icon left dark> {{item.icon}} </v-icon>
+        {{ item.title }}
       </v-btn>
-      <v-btn
-        icon
-        light
-        @click.stop="clipped = !clipped"
-      >
-        <v-icon>web</v-icon>
-      </v-btn>
-      <v-btn
-        icon
-        light
-        @click.stop="fixed = !fixed"
-      >
-        <v-icon>remove</v-icon>
-      </v-btn>
-      <v-toolbar-title v-text="title"></v-toolbar-title>
-      <v-spacer></v-spacer>
-      <v-btn
-        icon
-        light
-        @click.stop="rightDrawer = !rightDrawer"
-      >
-        <v-icon>menu</v-icon>
-      </v-btn>
-    </v-toolbar>
-    <main>
-      <v-container fluid>
-        <v-slide-y-transition mode="out-in">
-          <v-layout column align-center>
-            <img src="/static/v.png" alt="Vuetify.js" class="mb-5">
-            <blockquote>
-              &#8220;First, solve the problem. Then, write the code.&#8221;
-              <footer>
-                <small>
-                  <em>&mdash;John Johnson</em>
-                </small>
-              </footer>
-            </blockquote>
-          </v-layout>
-        </v-slide-y-transition>
-      </v-container>
-    </main>
-    <v-navigation-drawer
-      temporary
-      :right="right"
-      v-model="rightDrawer"
-    >
-      <v-list>
-        <v-list-tile @click="right = !right">
-          <v-list-tile-action>
-            <v-icon light>compare_arrows</v-icon>
-          </v-list-tile-action>
-          <v-list-tile-title>Switch drawer (click me)</v-list-tile-title>
-        </v-list-tile>
-      </v-list>
-    </v-navigation-drawer>
-    <v-footer :fixed="fixed">
-      <span>&copy; 2017</span>
-    </v-footer>
-  </v-app>
+    </v-toolbar-items>
+  </v-toolbar>
+  <!--End of toolbar-->
+
+  <!--Main content -->
+  <main>
+    <v-container>
+      <router-view></router-view>
+    </v-container>
+  </main>
+  <!--End of main content-->
+
+  <!--Footer-->
+  <v-footer>
+    my foot
+  </v-footer>
+  <!--End of footer-->
+
+</v-app>
 </template>
 
 <script>
-  export default {
-    data () {
-      return {
-        clipped: false,
-        drawer: true,
-        fixed: false,
-        items: [
-          { icon: 'bubble_chart', title: 'Inspire' }
-        ],
-        miniVariant: false,
-        right: true,
-        rightDrawer: false,
-        title: 'Vuetify.js'
-      }
+export default {
+  data() {
+    return {
+      drawer: false,
+      menuItems:[
+        {icon:'lock_outline', title: 'Log out' },
+        {icon:'lock_open', title: 'Log in'},
+        {icon:'face', title: 'Register'},
+      ]
     }
   }
+}
 </script>
 
 <style lang="stylus">
