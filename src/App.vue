@@ -22,11 +22,21 @@
     </v-toolbar-title>
     <v-spacer></v-spacer>
     <v-toolbar-items class="hidden-xs-only">
-      <v-btn flat v-for="item in menuItems" :key="item.title">
+      <v-btn flat v-for="item in navItems" :key="item.title">
         <v-icon left dark> {{item.icon}} </v-icon>
         {{ item.title }}
       </v-btn>
     </v-toolbar-items>
+    <v-menu bottom right>
+      <v-btn icon slot="activator" dark>
+        <v-icon>more_vert</v-icon>
+      </v-btn>
+      <v-list>
+        <v-list-tile v-for="item in menuItems" :key="item.title" @click="">
+          <v-list-tile-title>{{ item.title }}</v-list-tile-title>
+        </v-list-tile>
+      </v-list>
+    </v-menu>
   </v-toolbar>
   <!--End of toolbar-->
 
@@ -53,11 +63,18 @@ export default {
     return {
       drawer: false,
       menuItems:[
-        {icon:'lock_outline', title: 'Log out' },
-        {icon:'lock_open', title: 'Log in'},
-        {icon:'face', title: 'Register'},
+        {icon:'lock_outline', title: 'Log out', link: '/logout' },
+        {icon:'lock_open', title: 'Log in', link: '/login'},
+        {icon:'face', title: 'Register', link:'/register'},
+      ],
+      navItems:[
+        {icon:'create', title: 'New Question', link: '/questions/new' },
+        {icon:'face', title: 'Profile', link: ''},
       ]
     }
+  },
+  methods:{
+
   }
 }
 </script>
