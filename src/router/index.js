@@ -11,17 +11,17 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'Questions',
+      name: 'questions',
       component: Questions
     },
     {
       path: '/questions/new',
-      name: 'NewQuestion',
+      name: 'newquestion',
       component: NewQuestion
     },
     {
       path: '/questions/:id',
-      name: 'ShowQuestion',
+      name: 'showquestion',
       component: ShowQuestion
     },
 

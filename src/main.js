@@ -18,7 +18,7 @@ Vue.filter('timeAgo', (date) =>{
 })
 
 Vue.filter('sliceAndDice', (string) =>{
-  return `${string.slice(0,100)} ... `
+  return `${string.slice(0,250)} ... `
 })
 
 

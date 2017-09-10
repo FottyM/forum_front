@@ -17,8 +17,10 @@
   <v-toolbar  dark class="primary">
     <v-toolbar-side-icon v-on:click.stop="drawer = !drawer" class=""></v-toolbar-side-icon>
     <v-toolbar-title>
+      <router-link class="white--text title-text" to="/">
       <v-icon dark left>forum</v-icon>
-      Tikvaa-Forum
+        Tikvaa-Forum
+      </router-link>
     </v-toolbar-title>
     <v-spacer></v-spacer>
     <v-toolbar-items class="hidden-sm-and-down">
@@ -49,8 +51,10 @@
   <!--End of main content-->
 
   <!--Footer-->
-  <v-footer>
-    my foot
+  <v-footer dark class="primary">
+    <div class="text-xs-center text--lighten-5 ">
+      &copy Fortunat Mutunda
+    </div>
   </v-footer>
   <!--End of footer-->
 
@@ -81,4 +85,7 @@ export default {
 
 <style lang="stylus">
   @import './stylus/main'
+  .title-text{
+    text-decoration: none
+  }
 </style>
