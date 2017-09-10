@@ -1,34 +1,61 @@
 <template>
-<v-layout>
-  <v-flex>
-    <v-card>
-      <v-card-title>
-        Title
-      </v-card-title>
-      <v-card-text>
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cupiditate delectus eos explicabo molestias numquam quaerat rerum sapiente unde! A animi consectetur dolores ipsa minus, natus quia. Error hic obcaecati officia.
-      </v-card-text>
-      <v-card-actions>
-        <v-btn class="primary">Press Hard</v-btn>
-      </v-card-actions>
-    </v-card>
-  </v-flex>
-</v-layout>
+  <v-layout row wrap>
+    <v-flex xs10 offset-xs1 v-for="question in questions" :key="question.id">
+      <v-card>
+        <v-card-title primary-title>
+          <div v-if=" questions === null ">
+            Kept you waiting huh!
+          </div>
+          <div v-else>
+            <h2 class="headline"> {{question.title}} </h2>
+            <p> {{question.body | sliceAndDice }}</p>
+          </div>
+        </v-card-title>
+        <v-card-actions>
+          <v-btn flat class="primary--text">
+            Push It
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-flex>
+  </v-layout>
 </template>
 <script>
-  export default {
-    name: 'Questions',
-    data(){
-      return{
+  import axios from 'axios'
+  import moment from 'moment'
+  import {mapGetters} from 'vuex'
 
+  export default {
+    name: 'app-questions',
+    computed: {
+      ...mapGetters(['questions'])
+    },
+    data() {
+      return {
+        errors: [],
+        show: false
       }
     },
-    computed:{
+    async mounted() {
+      console.log(this.questions);
+      await axios.get('http://localhost:3000/api/v1/questions')
+        .then(questions => {
+          this.$store.dispatch('setQuestions', questions.data)
+        })
+        .catch(error => {
+          this.errors.push(error)
+        })
 
     },
-    methods:{
-
-    }
+    methods: {},
+//    filters:{
+//      timeAgo(date){
+//        return moment(date).fromNow()
+//      },
+//      sliceAndDice(string){
+//        return string.slice(0, 100) + "..."
+//      }
+//    }
   }
 
 </script>

@@ -12,27 +12,19 @@ const store = new Vuex.Store({
   },
 
   mutations: {
-    SET_USER(state, user) {
-      state.currentUser = user
-    },
-    SET_CURRENT_CHANNEL(state, channel) {
-      state.currentChannel = channel
+    SET_QUESTIONS(state, questions ) {
+      state.questions = questions
     }
   },
 
   actions: {
-    setUser({commit}, user) {
-      commit('SET_USER', user)
+    setQuestions({commit}, questions) {
+      commit('SET_QUESTIONS', questions )
     },
-    setCurrentChannel({commit}, channel) {
-      commit('SET_CURRENT_CHANNEL', channel)
-    },
-
   },
 
   getters: {
-    currentUser: state => state.currentUser,
-    currentChannel: state => state.currentChannel,
+    questions: state => state.questions,
   }
 
 });
