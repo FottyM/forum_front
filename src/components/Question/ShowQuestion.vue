@@ -1,38 +1,49 @@
 <template>
-  <v-container grid-list-md text-xs-center>
+  <!--<v-container grid-list-md>-->
     <v-layout row wrap>
-      <v-flex xs8 offset-xs2>
-        <v-card dark class="primary">
-          <v-card-text> Title </v-card-text>
+      <v-flex xs10 offset-xs1>
+        <v-card flat>
+          <v-card-title>
+            <div>
+              <h4 title class="primary--text"> {{ currentQuestion.title  }} </h4>
+                <v-icon>access_time</v-icon>
+                <span class="grey--text"> {{currentQuestion.create_at | timeAgo }}</span>
+            </div>
+          </v-card-title>
+          <v-card-text>
+            <p> {{ currentQuestion.body  }} </p>
+          </v-card-text>
+          <v-card-actions>
+
+          </v-card-actions>
         </v-card>
       </v-flex>
-      <v-flex xs6 v-for="i in 2" :key="i">
-        <v-card dark class="secondary">
-          <v-card-text class="px-0">6</v-card-text>
-        </v-card>
+
+      <v-flex xs10 0ffset-xs1>
+
       </v-flex>
-      <v-flex xs4 v-for="i in 3" :key="i">
-        <v-card dark class="primary">
-          <v-card-text class="px-0">4</v-card-text>
+
+      <v-flex xs10 offset-xs1 v-for=" answer in currentAnswers" :key=" answer.id" >
+        <v-card flat>
+          <v-card-text> {{ answer.content }}  </v-card-text>
+          <v-card-actions>
+            <v-icon>access_time</v-icon>
+            <p flat class="orange--text">
+              {{ answer.create_at | timeAgo }}
+            </p>
+            <v-spacer></v-spacer>
+            <v-btn icon>
+              <v-icon>favorite</v-icon>
+            </v-btn>
+            <v-btn icon>
+              <v-icon>mode_comment</v-icon>
+            </v-btn>
+          </v-card-actions>
         </v-card>
-      </v-flex>
-      <v-flex xs3 v-for="i in 4" :key="i">
-        <v-card dark class="secondary">
-          <v-card-text class="px-0">3</v-card-text>
-        </v-card>
-      </v-flex>
-      <v-flex xs2 v-for="i in 6" :key="i">
-        <v-card dark class="primary">
-          <v-card-text class="px-0">2</v-card-text>
-        </v-card>
-      </v-flex>
-      <v-flex xs1 v-for="i in 12" :key="i">
-        <v-card dark class="secondary">
-          <v-card-text class="px-0">1</v-card-text>
-        </v-card>
+        <v-divider></v-divider>
       </v-flex>
     </v-layout>
-  </v-container>
+  <!--</v-container>-->
 </template>
 <script>
   import { mapGetters } from 'vuex'
@@ -46,33 +57,29 @@
       }
     },
     computed: {
-      ...mapGetters(['questions', 'currentQuestion'])
+      ...mapGetters(['questions', 'currentQuestion', 'currentAnswers'])
     },
     watch:{
       '$route' (to, from){
       }
     },
-    created(){
+    mounted(){
       this.setCurrentQuestion()
-
-    },
-    async mounted(){
-      this.setCurrentQuestion()
-      await axios.get(`http://localhost:3000/api/v1/questions/${this.currentQuestion.id}/answers/`)
-        .then( data => {
-          this.$store.dispatch('setCurrentAnswers', data )
-        })
-        .catch( error => {
-          console.error(error)
-        })
-      console.log(this.currentQuestion)
+      this.getAnswersForCurrentQuestion();
     },
     methods:{
       setCurrentQuestion(){
         let id = this.$route.params.id
         this.$store.dispatch('setCurrentQuestion', id)
       },
-      getAnswersForCurrentQuestion(){
+      async getAnswersForCurrentQuestion(){
+        await axios.get(`http://localhost:3000/api/v1/questions/${this.currentQuestion.id}/answers/`)
+          .then( answers => {
+            this.$store.dispatch('setCurrentAnswers', answers.data )
+          })
+          .catch( error => {
+            console.error(error)
+          })
 
       }
     }

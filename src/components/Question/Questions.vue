@@ -10,14 +10,13 @@
             <span class="grey--text">Author Name</span><br>
             <router-link class="question-title" :to="{ name: 'showquestion', params: { id: question.id }}">
               <h2 class="headline primary--text"> {{ question.title }} </h2>
-
-            <p class="secondary--text"> {{question.body | sliceAndDice }}</p>
             </router-link>
+            <p> {{question.body | sliceAndDice }}</p>
           </div>
         </v-card-title>
         <v-card-actions>
           <v-icon>access_time</v-icon>
-          <p flat class="primary--text">
+          <p flat class="orange--text">
             {{ question.create_at | timeAgo }}
           </p>
           <v-spacer></v-spacer>
@@ -52,20 +51,24 @@
         show: false
       }
     },
-    async mounted() {
-      await axios.get('http://localhost:3000/api/v1/questions')
-        .then(questions => {
-          this.$store.dispatch('setQuestions', questions.data)
-        })
-        .catch(error => {
-          this.errors.push(error)
-        })
-
+    mounted() {
+      this.getQuestions();
     },
-    methods: {},
+    methods: {
+      async getQuestions(){
+        await axios.get('http://localhost:3000/api/v1/questions')
+          .then(questions => {
+            this.$store.dispatch('setQuestions', questions.data)
+          })
+          .catch(error => {
+            this.errors.push(error)
+          })
+      }
+    },
+
 //    filters:{
-//      timeAgo(date){
-//        return moment(date).fromNow()
+//      timeAgo( date ){
+//        return moment( date ).startOf('hour').fromNow()
 //      },
 //      sliceAndDice(string){
 //        return string.slice(0, 100) + "..."
