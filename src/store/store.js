@@ -27,6 +27,9 @@ const store = new Vuex.Store({
     },
     SET_CURRENT_ANSWERS(state, data) {
       state.currentAnswers = data
+    },
+    ADD_COMMENT_TO_CURRENT_QUESTION(state, data){
+      state.currentAnswers.splice(0, 0, data)
     }
   },
 
@@ -39,6 +42,9 @@ const store = new Vuex.Store({
     },
     setCurrentAnswers({commit}, data) {
       commit('SET_CURRENT_ANSWERS', data)
+    },
+    addCommentToCurrentQuestion({commit}, data ){
+      commit('ADD_COMMENT_TO_CURRENT_QUESTION', data)
     }
   },
 

@@ -1,7 +1,7 @@
 <template>
   <v-layout row  wrap>
     <v-flex xs10 offset-xs1 v-for="question in questions" :key="question.id">
-      <v-card title>
+      <v-card title flat>
         <v-card-title primary-title>
           <div v-if=" questions === null ">
             Kept you waiting huh!
@@ -11,20 +11,20 @@
             <router-link class="question-title" :to="{ name: 'showquestion', params: { id: question.id }}">
               <h2 class="headline primary--text"> {{ question.title }} </h2>
             </router-link>
-            <p> {{question.body | sliceAndDice }}</p>
+            <p> {{ question.body | sliceAndDice }}</p>
           </div>
         </v-card-title>
         <v-card-actions>
           <v-icon>access_time</v-icon>
           <p flat class="orange--text">
-            {{ question.create_at | timeAgo }}
+            {{ question.created_at | timeAgo }}
           </p>
           <v-spacer></v-spacer>
           <v-btn icon>
             <v-icon>favorite</v-icon>
           </v-btn>
           <v-btn icon>
-            <v-icon>mode_comment</v-icon>
+            <v-icon>comment</v-icon>
           </v-btn>
           <!--<v-btn icon>-->
             <!--<v-icon>share</v-icon>-->
@@ -63,17 +63,11 @@
           .catch(error => {
             this.errors.push(error)
           })
+      },
+      async getAnswersCount(){
+
       }
     },
-
-//    filters:{
-//      timeAgo( date ){
-//        return moment( date ).startOf('hour').fromNow()
-//      },
-//      sliceAndDice(string){
-//        return string.slice(0, 100) + "..."
-//      }
-//    }
   }
 
 </script>
