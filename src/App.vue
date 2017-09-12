@@ -14,11 +14,11 @@
   <!--End of navigation drawer -->
 
   <!--Toolbar starts here-->
-  <v-toolbar  dark class="primary">
+  <v-toolbar dark class="primary">
     <v-toolbar-side-icon v-on:click.stop="drawer = !drawer" class=""></v-toolbar-side-icon>
     <v-toolbar-title>
       <router-link class="white--text title-text" to="/">
-      <v-icon dark left>forum</v-icon>
+        <v-icon dark left>forum</v-icon>
         Tikvaa-Forum
       </router-link>
     </v-toolbar-title>
@@ -66,18 +66,36 @@ export default {
   data() {
     return {
       drawer: false,
-      menuItems:[
-        {icon:'lock_outline', title: 'Log out', link: '/logout' },
-        {icon:'lock_open', title: 'Log in', link: '/login'},
-        {icon:'face', title: 'Register', link:'/register'},
+      menuItems: [{
+          icon: 'lock_outline',
+          title: 'Log out',
+          link: '/logout'
+        },
+        {
+          icon: 'lock_open',
+          title: 'Log in',
+          link: '/login'
+        },
+        {
+          icon: 'face',
+          title: 'Register',
+          link: '/register'
+        },
       ],
-      navItems:[
-        {icon:'create', title: 'New Question', link: '/questions/new' },
-        {icon:'face', title: 'Profile', link: ''},
+      navItems: [{
+          icon: 'create',
+          title: 'New Question',
+          link: '/questions/new'
+        },
+        {
+          icon: 'face',
+          title: 'Profile',
+          link: ''
+        },
       ]
     }
   },
-  methods:{
+  methods: {
 
   }
 }
