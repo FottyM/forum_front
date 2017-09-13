@@ -9,7 +9,6 @@ const store = new Vuex.Store({
   state: {
     currentUser: null,
     questions: null,
-    answers: null,
     currentQuestion: null,
     currentAnswers: null
   },
@@ -18,12 +17,8 @@ const store = new Vuex.Store({
     SET_QUESTIONS(state, questions) {
       state.questions = questions
     },
-    SET_CURRENT_QUESTION(state, id) {
-      let questions = state.questions
-      let question = questions.filter((question) => {
-        return question.id === id
-      });
-      state.currentQuestion = question.pop()
+    SET_CURRENT_QUESTION(state, data ) {
+      state.currentQuestion = data
     },
     SET_CURRENT_ANSWERS(state, data) {
       state.currentAnswers = data
@@ -38,38 +33,30 @@ const store = new Vuex.Store({
     },
     UPDATE_CURRENT_COMMENT(state, data){
       let { currentAnswers } = state;
-      currentAnswers = currentAnswers.map( answer =>  answer.id === data.id ? answer = data : answer )
-      state.currentAnswers = {...currentAnswers}
+      currentAnswers = currentAnswers.filter( answer => answer.id !== data.id )
+      currentAnswers.unshift(data)
+      state.currentAnswers = currentAnswers
+
     }
   },
 
   actions: {
-    setQuestions({
-      commit
-    }, questions) {
+    setQuestions({ commit }, questions) {
       commit('SET_QUESTIONS', questions)
     },
-    setCurrentQuestion({
-      commit
-    }, id) {
-      commit('SET_CURRENT_QUESTION', id)
+    setCurrentQuestion({ commit }, data ) {
+      commit('SET_CURRENT_QUESTION', data )
     },
-    setCurrentAnswers({
-      commit
-    }, data) {
-      commit('SET_CURRENT_ANSWERS', data)
+    setCurrentAnswers({ commit }, data ) {
+      commit('SET_CURRENT_ANSWERS', data )
     },
-    addCommentToCurrentQuestion({
-      commit
-    }, data) {
-      commit('ADD_COMMENT_TO_CURRENT_QUESTION', data)
+    addCommentToCurrentQuestion({ commit }, data) {
+      commit('ADD_COMMENT_TO_CURRENT_QUESTION', data )
     },
-    removeCommentFromCurrentQuestion({
-      commit
-    }, id) {
+    removeCommentFromCurrentQuestion({ commit }, id) {
       commit('REMOVE_COMMENT_FROM_CURRENT_QUESTION', id)
     },
-    updateCurrentComment({commit}, data){
+    updateCurrentComment({ commit }, data){
       commit('UPDATE_CURRENT_COMMENT', data)
     }
   },

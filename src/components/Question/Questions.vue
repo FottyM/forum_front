@@ -53,14 +53,15 @@ export default {
       show: false
     }
   },
-  mounted() {
+  created() {
     this.getQuestions();
   },
   methods: {
-    async getQuestions() {
-      await axios.get('http://localhost:3000/api/v1/questions')
-        .then(questions => {
-          this.$store.dispatch('setQuestions', questions.data)
+     getQuestions() {
+//       console.log(process.env)
+       axios.get('http://localhost:3000/api/v1/questions')
+        .then( res => {
+          this.$store.dispatch('setQuestions', res.data)
         })
         .catch(error => {
           this.errors.push(error)

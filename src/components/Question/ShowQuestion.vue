@@ -46,7 +46,7 @@
         </v-card-title>
         <v-card-text>
           <v-form>
-            <v-text-field label="Please write the comments" class="input-group--focused" placeholder="comment goes here..." multi-line v-model.prenvet="comment" dark required>
+            <v-text-field label="Please write the comments" class="input-group--focused" autofocus multi-line v-model.prenvet="comment" dark required>
             </v-text-field>
           </v-form>
         </v-card-text>
@@ -85,7 +85,7 @@
               <v-card-actions>
                 <v-spacer></v-spacer>
                 <v-btn class="blue--text darken-1" flat error @click.native="dialog = false">Close</v-btn>
-                <v-btn class="blue--text darken-1" flat primary @click.native="updateAnswer(answer)">Save</v-btn>
+                <v-btn class="blue--text darken-1" flat primary @click.native="updateAnswer()">Save</v-btn>
               </v-card-actions>
             </v-card>
           </v-dialog>
@@ -96,7 +96,7 @@
         <v-card-actions>
           <v-icon>access_time</v-icon>
           <p flat class="grey--text">
-            {{ answer.created_at | timeAgo }}
+            {{ answer.updated_at | timeAgo }}
           </p>
           <v-btn icon>
             <v-icon class="red--text">favorite</v-icon>
@@ -106,7 +106,7 @@
             <v-icon left>edit</v-icon>
             Edit
           </v-btn>
-          <v-btn flat @click="deleteAnswer(answer)">
+          <v-btn flat @click="deleteAnswer(answer)" data-confirm="Sure want to do this?">
             <v-icon left>delete</v-icon>
             Delete
           </v-btn>
@@ -133,7 +133,7 @@ export default {
       comment: '',
       commentToEdit: '',
       errors: [],
-      editedAnswer: null,
+      tempAnswerId: null,
       dialog: false
     }
   },
@@ -144,34 +144,32 @@ export default {
     }
   },
   watch: {
-    '$route.params.is' (to, from) {
+    '$route.params.id' (to, from) {
       let qid = to
-      console.log(qid,'watch')
       this.setCurrentQuestion(qid)
       this.getAnswersForCurrentQuestion(qid)
     }
   },
   created() {
     let qid = this.$route.params.id
-    console.log(qid, 'mounted')
     this.setCurrentQuestion(qid)
     this.getAnswersForCurrentQuestion(qid);
-  },
-  updated(){
-    let qid = this.$route.params.id
-    console.log(qid,'updated')
-    this.setCurrentQuestion(qid)
-    this.getAnswersForCurrentQuestion(qid);
+
   },
   methods: {
     setCurrentQuestion(qid) {
       let id = qid
-      this.$store.dispatch('setCurrentQuestion', id)
+      axios.get(`http://localhost:3000/api/v1/questions/${qid}`).then( res =>{
+          this.$store.dispatch('setCurrentQuestion', res.data )
+      }).catch( errer => {
+          console.log(errer)
+      })
+
     },
     getAnswersForCurrentQuestion(qid) {
       axios.get(`http://localhost:3000/api/v1/questions/${qid}/answers/`)
-        .then(answers => {
-          this.$store.dispatch('setCurrentAnswers', answers.data)
+        .then( res => {
+          this.$store.dispatch('setCurrentAnswers', res.data)
         })
         .catch(error => {
           console.error(error)
@@ -186,8 +184,8 @@ export default {
 
       if (!this.isEmpty) {
         axios.post(`http://localhost:3000/api/v1/questions/${question_id}/answers/`, answer_params)
-          .then(comment => {
-            this.$store.dispatch('addCommentToCurrentQuestion', comment.data)
+          .then(res => {
+            this.$store.dispatch('addCommentToCurrentQuestion', res.data)
             this.comment = ''
           })
           .catch(error => {
@@ -202,32 +200,32 @@ export default {
     captureAnswerContent(answer){
       this.dialog = true
       this.commentToEdit = answer.content
+      this.tempAnswerId = answer.id
 
     },
-    updateAnswer(answer){
+    updateAnswer(){
       let question_id = this.currentQuestion.id
       let updateContent = this.commentToEdit
-      let newAnswer = {...answer, content: updateContent }
+      let id = this.tempAnswerId
       this.dialog = false
-      axios.put(`http://localhost:3000/api/v1/questions/${question_id}/answers/${newAnswer.id}`, {content: newAnswer.content} )
-        .then( data => {
-          this.$store.dispatch('updateCurrentComment', data.data)
+      axios.put(`http://localhost:3000/api/v1/questions/${question_id}/answers/${id}`, { content:updateContent } )
+        .then( res => {
+          this.$store.dispatch('updateCurrentComment', res.data )
         })
-        .catch( data => {
-          console.log(data)
+        .catch( error => {
+          console.log(error)
         })
     },
     deleteAnswer(answer) {
       let question_id = this.currentQuestion.id
       let answer_id = answer.id
       axios.delete(`http://localhost:3000/api/v1/questions/${question_id}/answers/${answer_id}`).then(
-        answer => {
-          this.$store.dispatch('removeCommentFromCurrentQuestion', answer.data.id)
+        res => {
+          this.$store.dispatch('removeCommentFromCurrentQuestion', res.data.id)
         }
       ).catch(error => {
         console.log(error)
       })
-
     },
     clearField() {
       this.comment = ''
