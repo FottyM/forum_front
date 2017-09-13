@@ -35,6 +35,11 @@ const store = new Vuex.Store({
       let { currentAnswers } = state ;
       currentAnswers = currentAnswers.filter( answer => answer.id !== id )
       state.currentAnswers = currentAnswers
+    },
+    UPDATE_CURRENT_COMMENT(state, data){
+      let { currentAnswers } = state;
+      currentAnswers = currentAnswers.map( answer =>  answer.id === data.id ? answer = data : answer )
+      state.currentAnswers = {...currentAnswers}
     }
   },
 
@@ -63,6 +68,9 @@ const store = new Vuex.Store({
       commit
     }, id) {
       commit('REMOVE_COMMENT_FROM_CURRENT_QUESTION', id)
+    },
+    updateCurrentComment({commit}, data){
+      commit('UPDATE_CURRENT_COMMENT', data)
     }
   },
 
