@@ -20,6 +20,9 @@ const store = new Vuex.Store({
     SET_CURRENT_QUESTION(state, data ) {
       state.currentQuestion = data
     },
+    ADD_QUESTION(state, data ){
+      state.questions.splice(0,0, data)
+    },
     SET_CURRENT_ANSWERS(state, data) {
       state.currentAnswers = data
     },
@@ -46,6 +49,9 @@ const store = new Vuex.Store({
     },
     setCurrentQuestion({ commit }, data ) {
       commit('SET_CURRENT_QUESTION', data )
+    },
+    addQuestion({ commit }, data ){
+        commit('ADD_QUESTION', data )
     },
     setCurrentAnswers({ commit }, data ) {
       commit('SET_CURRENT_ANSWERS', data )

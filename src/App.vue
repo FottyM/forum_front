@@ -24,7 +24,7 @@
     </v-toolbar-title>
     <v-spacer></v-spacer>
     <v-toolbar-items class="hidden-sm-and-down">
-      <v-btn flat v-for="item in navItems" :key="item.title">
+      <v-btn flat v-for="item in navItems" :key="item.title" router :to="item.link">
         <v-icon left dark> {{item.icon}} </v-icon>
         {{ item.title }}
       </v-btn>
@@ -35,7 +35,7 @@
       </v-btn>
       <v-list>
         <v-list-tile v-for="item in menuItems" :key="item.title" @click="">
-          <v-list-tile-title>{{ item.title }}</v-list-tile-title>
+          <v-list-tile-title >{{ item.title }} -> </v-list-tile-title>
         </v-list-tile>
       </v-list>
     </v-menu>

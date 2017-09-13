@@ -42,6 +42,8 @@ import {
   mapGetters
 } from 'vuex'
 
+import API_URL from '../../configs/api'
+
 export default {
   name: 'app-questions',
   computed: {
@@ -58,8 +60,7 @@ export default {
   },
   methods: {
      getQuestions() {
-//       console.log(process.env)
-       axios.get('http://localhost:3000/api/v1/questions')
+       axios.get(`${API_URL}/questions`)
         .then( res => {
           this.$store.dispatch('setQuestions', res.data)
         })
@@ -67,9 +68,6 @@ export default {
           this.errors.push(error)
         })
     },
-    async getAnswersCount() {
-
-    }
   },
 }
 </script>

@@ -158,17 +158,16 @@ export default {
   },
   methods: {
     setCurrentQuestion(qid) {
-      let id = qid
-      axios.get(`http://localhost:3000/api/v1/questions/${qid}`).then( res =>{
-          this.$store.dispatch('setCurrentQuestion', res.data )
-      }).catch( errer => {
-          console.log(errer)
+      axios.get(`http://localhost:3000/api/v1/questions/${qid}`).then(res => {
+        this.$store.dispatch('setCurrentQuestion', res.data)
+      }).catch(errer => {
+        console.log(errer)
       })
 
     },
     getAnswersForCurrentQuestion(qid) {
       axios.get(`http://localhost:3000/api/v1/questions/${qid}/answers/`)
-        .then( res => {
+        .then(res => {
           this.$store.dispatch('setCurrentAnswers', res.data)
         })
         .catch(error => {
@@ -176,14 +175,14 @@ export default {
         })
     },
     postAnswer() {
-      let question_id = this.currentQuestion.id
-      let answer_params = {
+      let questionId = this.currentQuestion.id
+      let answerParams = {
         content: this.comment,
-        question_id
+        questionId
       }
 
       if (!this.isEmpty) {
-        axios.post(`http://localhost:3000/api/v1/questions/${question_id}/answers/`, answer_params)
+        axios.post(`http://localhost:3000/api/v1/questions/${questionId}/answers/`, answerParams)
           .then(res => {
             this.$store.dispatch('addCommentToCurrentQuestion', res.data)
             this.comment = ''
@@ -197,29 +196,31 @@ export default {
       }
 
     },
-    captureAnswerContent(answer){
+    captureAnswerContent(answer) {
       this.dialog = true
       this.commentToEdit = answer.content
       this.tempAnswerId = answer.id
 
     },
-    updateAnswer(){
-      let question_id = this.currentQuestion.id
+    updateAnswer() {
+      let questionId = this.currentQuestion.id
       let updateContent = this.commentToEdit
-      let id = this.tempAnswerId
+      let answerId = this.tempAnswerId
       this.dialog = false
-      axios.put(`http://localhost:3000/api/v1/questions/${question_id}/answers/${id}`, { content:updateContent } )
-        .then( res => {
-          this.$store.dispatch('updateCurrentComment', res.data )
+      axios.put(`http://localhost:3000/api/v1/questions/${questionId}/answers/${answerId}`, {
+          content: updateContent
         })
-        .catch( error => {
+        .then(res => {
+          this.$store.dispatch('updateCurrentComment', res.data)
+        })
+        .catch(error => {
           console.log(error)
         })
     },
     deleteAnswer(answer) {
-      let question_id = this.currentQuestion.id
-      let answer_id = answer.id
-      axios.delete(`http://localhost:3000/api/v1/questions/${question_id}/answers/${answer_id}`).then(
+      let questionId = this.currentQuestion.id
+      let answerId = answer.id
+      axios.delete(`http://localhost:3000/api/v1/questions/${questionId}/answers/${answerId}`).then(
         res => {
           this.$store.dispatch('removeCommentFromCurrentQuestion', res.data.id)
         }
