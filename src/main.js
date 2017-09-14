@@ -13,12 +13,12 @@ Vue.use(Vuetify)
 Vue.config.productionTip = false
 
 
-Vue.filter('timeAgo', (date) =>{
-  return moment(date).fromNow();
+Vue.filter('timeAgo', function(date){
+  return moment(date).fromNow()
 })
 
-Vue.filter('sliceAndDice', (string) =>{
-  return `${string.slice(0,100)} ... `
+Vue.filter('sliceAndDice', function(string){
+  return `${string.slice(0,250)} ... `
 })
 
 

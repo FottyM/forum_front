@@ -14,15 +14,17 @@
   <!--End of navigation drawer -->
 
   <!--Toolbar starts here-->
-  <v-toolbar  dark class="primary">
+  <v-toolbar dark class="primary">
     <v-toolbar-side-icon v-on:click.stop="drawer = !drawer" class=""></v-toolbar-side-icon>
     <v-toolbar-title>
-      <v-icon dark left>forum</v-icon>
-      Tikvaa-Forum
+      <router-link class="white--text title-text" to="/">
+        <v-icon dark left>forum</v-icon>
+        Tikvaa-Forum
+      </router-link>
     </v-toolbar-title>
     <v-spacer></v-spacer>
     <v-toolbar-items class="hidden-sm-and-down">
-      <v-btn flat v-for="item in navItems" :key="item.title">
+      <v-btn flat v-for="item in navItems" :key="item.title" router :to="item.link">
         <v-icon left dark> {{item.icon}} </v-icon>
         {{ item.title }}
       </v-btn>
@@ -33,7 +35,7 @@
       </v-btn>
       <v-list>
         <v-list-tile v-for="item in menuItems" :key="item.title" @click="">
-          <v-list-tile-title>{{ item.title }}</v-list-tile-title>
+          <v-list-tile-title >{{ item.title }} -> </v-list-tile-title>
         </v-list-tile>
       </v-list>
     </v-menu>
@@ -49,8 +51,10 @@
   <!--End of main content-->
 
   <!--Footer-->
-  <v-footer>
-    my foot
+  <v-footer dark class="primary">
+    <div class="text-xs-center text--lighten-5 ">
+      &copy Fortunat Mutunda
+    </div>
   </v-footer>
   <!--End of footer-->
 
@@ -62,18 +66,36 @@ export default {
   data() {
     return {
       drawer: false,
-      menuItems:[
-        {icon:'lock_outline', title: 'Log out', link: '/logout' },
-        {icon:'lock_open', title: 'Log in', link: '/login'},
-        {icon:'face', title: 'Register', link:'/register'},
+      menuItems: [{
+          icon: 'lock_outline',
+          title: 'Log out',
+          link: '/logout'
+        },
+        {
+          icon: 'lock_open',
+          title: 'Log in',
+          link: '/login'
+        },
+        {
+          icon: 'face',
+          title: 'Register',
+          link: '/register'
+        },
       ],
-      navItems:[
-        {icon:'create', title: 'New Question', link: '/questions/new' },
-        {icon:'face', title: 'Profile', link: ''},
+      navItems: [{
+          icon: 'create',
+          title: 'New Question',
+          link: '/questions/new'
+        },
+        {
+          icon: 'face',
+          title: 'Profile',
+          link: ''
+        },
       ]
     }
   },
-  methods:{
+  methods: {
 
   }
 }
@@ -81,4 +103,7 @@ export default {
 
 <style lang="stylus">
   @import './stylus/main'
+  .title-text{
+    text-decoration: none
+  }
 </style>

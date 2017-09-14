@@ -1,13 +1,15 @@
 <template>
-  <div>
-    Questions
-  </div>
+<app-questions></app-questions>
 </template>
 <script>
-  export default {
-    name: 'Questions'
-  }
+import AppQuestions from "./Question/Questions.vue";
 
+export default {
+  components: {
+    AppQuestions
+  },
+  name: 'home'
+}
 </script>
 <style scoped>
 
