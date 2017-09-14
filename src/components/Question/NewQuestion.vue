@@ -57,20 +57,18 @@
     },
     computed:{
       isEmpty(){
-        return this.title.length <= 0 && this.body.length <= 0
+        return ( this.title.length <= 0 && this.body.length <= 0 )
       }
-    }
-    ,created(){
-      console.log(API_URL)
+    },updated(){
+      console.log(this.isEmpty)
     },
     methods:{
       postQuestion(){
-        console.log(this.isEmpty)
         let questionParams = {
           title: this.title,
           body: this.body
         }
-        if(!this.isEmpty){
+        if( !this.isEmpty ){
           axios.post(`${API_URL}/questions`, questionParams )
             .then( res =>{
               this.$store.dispatch('addQuestion', res.data )

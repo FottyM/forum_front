@@ -33,6 +33,9 @@
     </v-card>
     <v-divider></v-divider>
   </v-flex>
+  <div class="text-xs-center">
+    <v-pagination :length="4" v-model="page" circle></v-pagination>
+  </div>
 </v-layout>
 </template>
 <script>
@@ -52,7 +55,8 @@ export default {
   data() {
     return {
       errors: [],
-      show: false
+      show: false,
+      page: 1
     }
   },
   created() {

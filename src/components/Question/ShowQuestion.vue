@@ -25,11 +25,11 @@
             30
           </v-btn>
           <v-spacer></v-spacer>
-          <v-btn flat>
+          <v-btn flat :to="{name: 'editquestion', parmas:{id: currentQuestion.id }}">
             <v-icon left>edit</v-icon>
             Edit
           </v-btn>
-          <v-btn flat>
+          <v-btn flat @click="deleteCurrentQuestion(currentQuestion)">
             <v-icon left>delete</v-icon>
             Delete
           </v-btn>
@@ -125,6 +125,7 @@ import {
   mapGetters
 } from 'vuex'
 import axios from 'axios'
+import API_URL from '../../configs/api'
 
 export default {
   name: 'showquestion',
@@ -158,7 +159,7 @@ export default {
   },
   methods: {
     setCurrentQuestion(qid) {
-      axios.get(`http://localhost:3000/api/v1/questions/${qid}`).then(res => {
+      axios.get(`${API_URL}/questions/${qid}`).then(res => {
         this.$store.dispatch('setCurrentQuestion', res.data)
       }).catch(errer => {
         console.log(errer)
@@ -166,7 +167,7 @@ export default {
 
     },
     getAnswersForCurrentQuestion(qid) {
-      axios.get(`http://localhost:3000/api/v1/questions/${qid}/answers/`)
+      axios.get(`${API_URL}/questions/${qid}/answers/`)
         .then(res => {
           this.$store.dispatch('setCurrentAnswers', res.data)
         })
@@ -180,9 +181,8 @@ export default {
         content: this.comment,
         questionId
       }
-
       if (!this.isEmpty) {
-        axios.post(`http://localhost:3000/api/v1/questions/${questionId}/answers/`, answerParams)
+        axios.post(`${API_URL}/questions/${questionId}/answers/`, answerParams)
           .then(res => {
             this.$store.dispatch('addCommentToCurrentQuestion', res.data)
             this.comment = ''
@@ -200,14 +200,13 @@ export default {
       this.dialog = true
       this.commentToEdit = answer.content
       this.tempAnswerId = answer.id
-
     },
     updateAnswer() {
       let questionId = this.currentQuestion.id
       let updateContent = this.commentToEdit
       let answerId = this.tempAnswerId
       this.dialog = false
-      axios.put(`http://localhost:3000/api/v1/questions/${questionId}/answers/${answerId}`, {
+      axios.put(`${API_URL}/questions/${questionId}/answers/${answerId}`, {
           content: updateContent
         })
         .then(res => {
@@ -217,10 +216,20 @@ export default {
           console.log(error)
         })
     },
+    deleteCurrentQuestion(currentAnswer){
+      let id = currentAnswer.id
+      axios.delete(`${API_URL}/questions/${id}`)
+        .then( res =>{
+          this.$router.push({ name: 'home'})
+        })
+        .catch( error => {
+
+        })
+    },
     deleteAnswer(answer) {
       let questionId = this.currentQuestion.id
       let answerId = answer.id
-      axios.delete(`http://localhost:3000/api/v1/questions/${questionId}/answers/${answerId}`).then(
+      axios.delete(`${API_URL}/questions/${questionId}/answers/${answerId}`).then(
         res => {
           this.$store.dispatch('removeCommentFromCurrentQuestion', res.data.id)
         }

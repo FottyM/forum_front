@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Questions from '@/components/Question/Questions'
 import NewQuestion from '@/components/Question/NewQuestion'
+import EditQuestion from '@/components/Question/EditQuestion'
 import ShowQuestion from '@/components/Question/ShowQuestion'
 import Home from '@/components/Home'
 
@@ -29,6 +30,11 @@ export default new Router({
       name: 'showquestion',
       component: ShowQuestion
     },
+    {
+      path:'/questions/:id/edit',
+      name: 'editquestion',
+      component: EditQuestion
+    }
 
   ],
   mode: 'history'
