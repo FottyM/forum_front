@@ -52,32 +52,36 @@
     data(){
       return{
         title: "",
-        body:""
+        body:"",
+        errors: []
       }
     },
     computed:{
       isEmpty(){
-        return ( this.title.length <= 0 && this.body.length <= 0 )
+//        return ( this.title.length <= 3 && this.body.length <= 0 )
       }
-    },updated(){
-      console.log(this.isEmpty)
     },
     methods:{
       postQuestion(){
         let questionParams = {
-          title: this.title,
-          body: this.body
+          question:{
+            title: this.title,
+            body: this.body
+          }
         }
+
         if( !this.isEmpty ){
           axios.post(`${API_URL}/questions`, questionParams )
             .then( res =>{
+              console.log(res)
               this.$store.dispatch('addQuestion', res.data )
               this.$router.push({name:'showquestion', params:{id: res.data.id }})
               this.content = ''
               this.title = ''
             })
             .catch( error => {
-              console.log(error)
+              this.errors.push( error.response.data )
+             console.error( error.response.data )
             })
         }
 

@@ -4,6 +4,8 @@ import Questions from '@/components/Question/Questions'
 import NewQuestion from '@/components/Question/NewQuestion'
 import EditQuestion from '@/components/Question/EditQuestion'
 import ShowQuestion from '@/components/Question/ShowQuestion'
+import Register from '@/components/User/Register'
+import Login from '@/components/User/Login'
 import Home from '@/components/Home'
 
 Vue.use(Router);
@@ -34,8 +36,18 @@ export default new Router({
       path:'/questions/:id/edit',
       name: 'editquestion',
       component: EditQuestion
-    }
+    },
+    {
+      path: '/register',
+      name: 'register',
+      component: Register
+    },
+    {
+      path: '/login',
+      name: 'login',
+      component: Login
 
+    }
   ],
   mode: 'history'
 })

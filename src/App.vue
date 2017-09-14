@@ -1,17 +1,33 @@
 <template>
 <v-app light>
   <!--Navigation drawer-->
-  <v-navigation-drawer persistent v-model="drawer" light enable-resize-watcher overflow>
-    <v-list>
-      <v-list-tile v-for="item in menuItems" :key=" item.title ">
+  <v-navigation-drawer absolute persistent :mini-variant.sync="mini" light v-model="drawer" overflow>
+    <v-toolbar flat class="transparent">
+      <v-list class="pa-0">
+        <v-list-tile avatar>
+          <v-list-tile-avatar>
+            FM
+          </v-list-tile-avatar>
+          <v-list-tile-content>
+            <v-list-tile-title>Fortunat Mutunda</v-list-tile-title>
+          </v-list-tile-content>
+        </v-list-tile>
+      </v-list>
+    </v-toolbar>
+    <v-list class="pt-0" dense>
+      <v-divider></v-divider>
+      <v-list-tile v-for="item in menuItems" :key="item.title" :to="item.link" @click="">
         <v-list-tile-action>
-          <v-icon> {{ item.icon }} </v-icon>
+          <v-icon>{{ item.icon }}</v-icon>
         </v-list-tile-action>
-        <v-list-tile-content> {{ item.title }} </v-list-tile-content>
+        <v-list-tile-content>
+          <v-list-tile-title> {{ item.title }}</v-list-tile-title>
+        </v-list-tile-content>
       </v-list-tile>
     </v-list>
   </v-navigation-drawer>
   <!--End of navigation drawer -->
+
 
   <!--Toolbar starts here-->
   <v-toolbar dark class="primary">
@@ -65,6 +81,7 @@
 export default {
   data() {
     return {
+      mini: false,
       drawer: false,
       menuItems: [{
           icon: 'lock_outline',

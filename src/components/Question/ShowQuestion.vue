@@ -188,8 +188,8 @@ export default {
             this.comment = ''
           })
           .catch(error => {
-            this.errors.push(error)
-            console.log(error)
+            this.errors.push(error.response.data )
+            console.log(error.response.data )
           })
       } else {
         this.errors.push("Can't do that")
