@@ -29,18 +29,18 @@ const store = new Vuex.Store({
       state.currentAnswers = data
     },
     ADD_COMMENT_TO_CURRENT_QUESTION(state, data) {
-      state.currentAnswers.splice(0, 0, data)
+      state.currentAnswers.answers.splice(0, 0, data )
     },
     REMOVE_COMMENT_FROM_CURRENT_QUESTION(state, id) {
-      let { currentAnswers } = state ;
-      currentAnswers = currentAnswers.filter( answer => answer.id !== id )
-      state.currentAnswers = currentAnswers
+      let { currentAnswers } = state
+      currentAnswers = currentAnswers.answers.filter( answer => answer.id !== id )
+      state.currentAnswers.answers = currentAnswers
     },
     UPDATE_CURRENT_COMMENT(state, data){
-      let { currentAnswers } = state;
-      currentAnswers = currentAnswers.filter( answer => answer.id !== data.id )
+      let { currentAnswers } = state
+      currentAnswers = currentAnswers.answers.filter( answer => answer.id !== data.id )
       currentAnswers.unshift(data)
-      state.currentAnswers = currentAnswers
+      state.currentAnswers.answers = currentAnswers
     },
     SET_AUTH_TOKEN(state, token ){
       state.authToken = token.auth_token;
