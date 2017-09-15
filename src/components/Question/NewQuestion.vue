@@ -1,5 +1,10 @@
 <template>
   <v-container fluid>
+    <div>
+      <v-alert :success="success" :info="info" :error="error" dismissible v-model="alert">
+        {{ message }}
+      </v-alert>
+    </div>
     <v-layout row wrap>
       <v-flex xs12 md8 offset-md2>
         <v-card>
@@ -29,7 +34,7 @@
                   label="Message"
                   v-model="body"
                   counter
-                  max="120"
+                  max="800"
                   full-width
                   multi-line
                   single-line
@@ -54,7 +59,13 @@
       return{
         title: "",
         body:"",
-        errors: []
+        errors: [],
+        dialog: false,
+        alert: false,
+        success: false,
+        info: false,
+        error: false,
+        message: ''
       }
     },
     computed:{ ...mapGetters(['authToken', 'currentUser']),
@@ -81,10 +92,23 @@
               this.$router.push({name:'showquestion', params:{id: res.data.id }})
               this.content = ''
               this.title = ''
+              this.alert = true
+              this.success =  true
+              this.info = false
+              this.error = false
+              this.message = 'Question posted successfully'
+
             })
             .catch( error => {
               this.errors.push( error.response.data )
              console.error( error.response.data )
+              this.content = ''
+              this.title = ''
+              this.alert = true
+              this.success =  true
+              this.info = false
+              this.error = false
+              this.message = error.response.data
             })
         }
 

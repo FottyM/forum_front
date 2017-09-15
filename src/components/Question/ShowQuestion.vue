@@ -236,7 +236,17 @@ export default {
       axios.put(`${API_URL}/questions/${questionId}/answers/${answerId}`, {content: updateContent, user_id: userID}, headers )
         .then(res => {
           this.$store.dispatch('updateCurrentComment', res.data ) })
+          this.alert = true
+          this.success = true
+          this.info = false
+          this.error = false
+          this.message = 'Comment updated successfully'
         .catch(error => {
+          this.alert = true
+          this.error = true
+          this.success = false
+          this.info = false
+          this.message = 'Comment: ' + error.response.data  + ', updated successfully'
           console.log(error.response.data)
         })
     },
@@ -261,8 +271,19 @@ export default {
       axios.delete(`${API_URL}/questions/${questionId}/answers/${answerId}`, headers ).then(
         res => {
           this.$store.dispatch('removeCommentFromCurrentQuestion', res.data.id)
+          confirm('Want to delete')
+          this.alert = true
+          this.error = true
+          this.success = false
+          this.info = false
+          this.message = 'Comment deleted'
         }
       ).catch(error => {
+        this.alert = true
+        this.error = false
+        this.success = false
+        this.info = true
+        this.message = "couldn't delete, please check if you are loged in or if you're an admin"
         console.log(error.response.data)
       })
     },

@@ -4,7 +4,7 @@
       <v-flex xs12 md8 offset-md2>
         <v-card>
           <v-card-title dark class="primary">
-            <h5 class="white--text">Register</h5>
+            <h5 class="white--text">Login</h5>
           </v-card-title>
           <v-card-text>
             <v-form ref="form">
@@ -52,7 +52,8 @@
             let authToken = res.data
             this.$store.dispatch('setAuthToken', authToken )
             this.$store.dispatch('setCurrentUser', authToken)
-            this.$router.push({name: 'profile'})
+            this.$store.commit('LOG_IN', true )
+            this.$router.push({name: 'questions'})
           })
           .catch( error => {
             console.log( error.response )

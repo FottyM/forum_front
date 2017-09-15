@@ -21,6 +21,7 @@
     created(){
       this.$store.dispatch('removeCurrentUser', null )
       this.$store.dispatch('removeToken', null )
+      this.$store.commit('LOG_OUT', false)
       this.$router.push({name: 'login'})
     }
   }

@@ -12,7 +12,8 @@ const store = new Vuex.Store({
     questions: null,
     currentQuestion: null,
     currentAnswers: null,
-    authToken: null
+    authToken: null,
+    loggedin: false
   },
 
   mutations: {
@@ -53,7 +54,14 @@ const store = new Vuex.Store({
     },
     REMOVE_TOKEN( state, data ){
       state.authToken = data
+    },
+    LOG_OUT(state, data ){
+      state.loggedin = data
+    },
+    LOG_IN(state, data ){
+      state.loggedin = data
     }
+
   },
 
   actions: {
@@ -97,7 +105,8 @@ const store = new Vuex.Store({
     currentQuestion: state => state.currentQuestion,
     currentAnswers: state => state.currentAnswers,
     authToken: state => state.authToken,
-    currentUser: state => state.currentUser
+    currentUser: state => state.currentUser,
+    loggedin: state => state.loggedin
   }
 
 });

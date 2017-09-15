@@ -28,7 +28,7 @@
     </v-toolbar>
     <v-list class="pt-0" dense>
       <v-divider></v-divider>
-      <v-list-tile v-for="item in menuItems" :key="item.title" :to="item.link" >
+      <v-list-tile v-for="item in menuItems" :key="item.title" :to="item.link" v-if=" item.loggedin === loggedin" >
         <v-list-tile-action>
           <v-icon>{{ item.icon }}</v-icon>
         </v-list-tile-action>
@@ -52,9 +52,9 @@
     </v-toolbar-title>
     <v-spacer></v-spacer>
     <v-toolbar-items class="hidden-sm-and-down">
-      <v-btn flat v-for="item in menuItems" :key="item.title" router :to="item.link">
-        <v-icon left dark> {{item.icon}} </v-icon>
-        {{ item.title }}
+      <v-btn flat v-for="item in menuItems" :key="item.title" router :to="item.link" v-if=" item.loggedin === loggedin">
+          <v-icon left dark> {{item.icon}} </v-icon>
+          {{ item.title }}
       </v-btn>
     </v-toolbar-items>
   </v-toolbar>
@@ -92,33 +92,38 @@ export default {
       menuItems: [{
           icon: 'lock_outline',
           title: 'Log out',
-          link: '/logout'
+          link: '/logout',
+          loggedin: true
         },
         {
           icon: 'lock_open',
           title: 'Log in',
-          link: '/login'
+          link: '/login',
+          loggedin: false
         },
         {
           icon: 'face',
           title: 'Register',
-          link: '/register'
+          link: '/register',
+          loggedin: false
         },
         {
           icon: 'create',
           title: 'New Question',
-          link: '/questions/new'
+          link: '/questions/new',
+          loggedin: true
         },
         {
           icon: 'face',
           title: 'Profile',
-          link: '/profile'
+          link: '/profile',
+          loggedin: true
         },
       ]
     }
   },
   computed:{
-    ...mapGetters(['currentUser'])
+    ...mapGetters(['currentUser', 'loggedin'])
   },
   filters:{
     initiales(username){
