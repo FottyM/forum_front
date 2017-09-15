@@ -31,7 +31,7 @@
 
               <v-checkbox label="Admin?" v-model="admin" required></v-checkbox>
               <v-spacer></v-spacer>
-              <v-btn @click="clear">clear</v-btn>
+              <v-btn @click="clear">Clear</v-btn>
               <v-btn @click="register" class="primary">Register</v-btn>
             </v-form>
           </v-card-text>
@@ -39,7 +39,6 @@
       </v-flex>
     </v-layout>
   </v-container>
-
 </template>
 <script>
   import axios from 'axios'

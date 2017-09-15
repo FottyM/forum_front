@@ -6,17 +6,29 @@
       <v-list class="pa-0">
         <v-list-tile avatar>
           <v-list-tile-avatar>
-            FM
+            <template v-if="currentUser">
+              {{currentUser.user.username | initiales }}
+            </template>
+            <template v-else>
+              FM
+            </template>
           </v-list-tile-avatar>
           <v-list-tile-content>
-            <v-list-tile-title>Fortunat Mutunda</v-list-tile-title>
+            <v-list-tile-title>
+              <template v-if="currentUser">
+                {{ currentUser.user.username }}
+              </template>
+              <template v-else>
+                Please Login
+              </template>
+            </v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
       </v-list>
     </v-toolbar>
     <v-list class="pt-0" dense>
       <v-divider></v-divider>
-      <v-list-tile v-for="item in menuItems" :key="item.title" :to="item.link" @click="">
+      <v-list-tile v-for="item in menuItems" :key="item.title" :to="item.link" >
         <v-list-tile-action>
           <v-icon>{{ item.icon }}</v-icon>
         </v-list-tile-action>
@@ -40,21 +52,21 @@
     </v-toolbar-title>
     <v-spacer></v-spacer>
     <v-toolbar-items class="hidden-sm-and-down">
-      <v-btn flat v-for="item in navItems" :key="item.title" router :to="item.link">
+      <v-btn flat v-for="item in menuItems" :key="item.title" router :to="item.link">
         <v-icon left dark> {{item.icon}} </v-icon>
         {{ item.title }}
       </v-btn>
     </v-toolbar-items>
-    <v-menu bottom right>
-      <v-btn icon slot="activator" dark>
-        <v-icon>more_vert</v-icon>
-      </v-btn>
-      <v-list>
-        <v-list-tile v-for="item in menuItems" :key="item.title" @click="">
-          <v-list-tile-title >{{ item.title }} -> </v-list-tile-title>
-        </v-list-tile>
-      </v-list>
-    </v-menu>
+    <!--<v-menu bottom right>-->
+      <!--<v-btn icon slot="activator" dark>-->
+        <!--<v-icon>more_vert</v-icon>-->
+      <!--</v-btn>-->
+      <!--<v-list>-->
+        <!--<v-list-tile v-for="item in menuItems" :key="item.title" @click="">-->
+          <!--<v-list-tile-title >{{ item.title }} -> </v-list-tile-title>-->
+        <!--</v-list-tile>-->
+      <!--</v-list>-->
+    <!--</v-menu>-->
   </v-toolbar>
   <!--End of toolbar-->
 
@@ -78,6 +90,7 @@
 </template>
 
 <script>
+  import { mapGetters } from 'vuex'
 export default {
   data() {
     return {
@@ -98,8 +111,7 @@ export default {
           title: 'Register',
           link: '/register'
         },
-      ],
-      navItems: [{
+        {
           icon: 'create',
           title: 'New Question',
           link: '/questions/new'
@@ -107,13 +119,21 @@ export default {
         {
           icon: 'face',
           title: 'Profile',
-          link: ''
+          link: '/profile'
         },
       ]
     }
   },
+  computed:{
+    ...mapGetters(['currentUser'])
+  },
   methods: {
 
+  },
+  filters:{
+    initiales(username){
+      return username[0].toLocaleUpperCase()
+    }
   }
 }
 </script>

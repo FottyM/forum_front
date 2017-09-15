@@ -172,7 +172,7 @@ export default {
           this.$store.dispatch('setCurrentAnswers', res.data)
         })
         .catch(error => {
-          console.error(error)
+          console.error(error.response.data)
         })
     },
     postAnswer() {
@@ -213,7 +213,7 @@ export default {
           this.$store.dispatch('updateCurrentComment', res.data)
         })
         .catch(error => {
-          console.log(error)
+          console.log(error.response.data)
         })
     },
     deleteCurrentQuestion(currentAnswer){
@@ -223,7 +223,7 @@ export default {
           this.$router.push({ name: 'home'})
         })
         .catch( error => {
-
+          console.log(error.response.data )
         })
     },
     deleteAnswer(answer) {
@@ -234,7 +234,7 @@ export default {
           this.$store.dispatch('removeCommentFromCurrentQuestion', res.data.id)
         }
       ).catch(error => {
-        console.log(error)
+        console.log(error.response.data)
       })
     },
     clearField() {

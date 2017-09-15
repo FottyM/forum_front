@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import createPersistedState from 'vuex-persistedstate'
+import jwtDecode from 'jwt-decode'
 
 Vue.use(Vuex);
 
@@ -10,7 +11,8 @@ const store = new Vuex.Store({
     currentUser: null,
     questions: null,
     currentQuestion: null,
-    currentAnswers: null
+    currentAnswers: null,
+    authToken: null
   },
 
   mutations: {
@@ -39,7 +41,18 @@ const store = new Vuex.Store({
       currentAnswers = currentAnswers.filter( answer => answer.id !== data.id )
       currentAnswers.unshift(data)
       state.currentAnswers = currentAnswers
-
+    },
+    SET_AUTH_TOKEN(state, token ){
+      state.authToken = token.auth_token;
+    },
+    SET_CURRENT_USER(state, token){
+      state.currentUser = jwtDecode(token.auth_token)
+    },
+    REMOVE_CURRENT_USER( state, data){
+      state.currentUser = data
+    },
+    REMOVE_TOKEN( state, data ){
+      state.authToken = data
     }
   },
 
@@ -64,13 +77,27 @@ const store = new Vuex.Store({
     },
     updateCurrentComment({ commit }, data){
       commit('UPDATE_CURRENT_COMMENT', data)
+    },
+    setAuthToken({ commit }, token){
+      commit('SET_AUTH_TOKEN', token )
+    },
+    setCurrentUser({ commit }, token ){
+      commit('SET_CURRENT_USER', token)
+    },
+    removeCurrentUser({ commit }, data ){
+      commit('REMOVE_CURRENT_USER', data )
+    },
+    removeToken({ commit }, data ){
+      commit('REMOVE_TOKEN', data )
     }
   },
 
   getters: {
     questions: state => state.questions,
     currentQuestion: state => state.currentQuestion,
-    currentAnswers: state => state.currentAnswers
+    currentAnswers: state => state.currentAnswers,
+    authToken: state => state.authToken,
+    currentUser: state => state.currentUser
   }
 
 });

@@ -6,12 +6,18 @@ import EditQuestion from '@/components/Question/EditQuestion'
 import ShowQuestion from '@/components/Question/ShowQuestion'
 import Register from '@/components/User/Register'
 import Login from '@/components/User/Login'
+import Logout from '@/components/User/Logout'
+import Profile from '@/components/User/Profile'
 import Home from '@/components/Home'
 
 Vue.use(Router);
 
 export default new Router({
   routes: [
+    {
+      path: '*',
+      redirect: '/'
+    },
     {
       path:'/',
       name:'home',
@@ -25,7 +31,8 @@ export default new Router({
     {
       path: '/questions/new',
       name: 'newquestion',
-      component: NewQuestion
+      component: NewQuestion,
+      // beforeEnter
     },
     {
       path: '/questions/:id',
@@ -35,18 +42,32 @@ export default new Router({
     {
       path:'/questions/:id/edit',
       name: 'editquestion',
-      component: EditQuestion
+      component: EditQuestion,
+      // beforeEnter: (to, from, next) => this.$state.currentUser.user !== null ? next({ path: '/login' }) : next('/')
     },
     {
       path: '/register',
       name: 'register',
-      component: Register
+      component: Register,
+      // beforeEnter
     },
     {
       path: '/login',
       name: 'login',
-      component: Login
+      component: Login,
+      // beforeEnter
+    },
+    {
+      path: '/logout',
+      name: 'logout',
+      component: Logout
 
+    },
+    {
+      path: '/profile',
+      name: 'profile',
+      component: Profile,
+      // beforeEnter
     }
   ],
   mode: 'history'
