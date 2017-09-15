@@ -58,27 +58,30 @@
       }
     },
     created(){
-      this.title = this.currentQuestion.title
-      this.body = this.currentQuestion.body
+      this.title = this.currentQuestion.question.title
+      this.body = this.currentQuestion.question.body
     },
     computed:{
-      ...mapGetters(['currentQuestion'])
+      ...mapGetters(['currentQuestion', 'authToken'])
     },
     methods:{
       updateQuestion(){
-        let qid = this.currentQuestion.id
+        let qid = this.currentQuestion.question.id
         let body = this.body
         let title = this.title
         let questionParams = {
           title,
           body
         }
-        axios.put(`${API_URL}/questions/${qid}`, questionParams)
+        let headers = {headers :{'Authorization': this.authToken } }
+
+        axios.put(`${API_URL}/questions/${qid}`, questionParams, headers )
           .then( res => {
             this.$router.push({name: 'showquestion', params:{id: res.data.id}})
-            console.log(res)
           })
-          .catch()
+          .catch( error => {
+            console.log( error.response.data )
+          })
 
       }
     }
