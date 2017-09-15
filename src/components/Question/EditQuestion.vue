@@ -62,16 +62,19 @@
       this.body = this.currentQuestion.question.body
     },
     computed:{
-      ...mapGetters(['currentQuestion', 'authToken'])
+      ...mapGetters(['currentQuestion', 'authToken', 'currentUser'])
     },
     methods:{
       updateQuestion(){
         let qid = this.currentQuestion.question.id
         let body = this.body
         let title = this.title
+        let userId = this.currentUser.id
         let questionParams = {
-          title,
-          body
+          question:{
+            title,
+            body
+          }
         }
         let headers = {headers :{'Authorization': this.authToken } }
 
