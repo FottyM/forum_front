@@ -1,3 +1,3 @@
-const API_URL = process.env === 'production' ? 'https://tikvaa-forum-api.herokuapp.com/api/v1' : 'http://localhost:3000/api/v1'
+const API_URL = process.env.API_URL
 
 export default  API_URL
