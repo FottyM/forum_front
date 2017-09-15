@@ -9,7 +9,6 @@ import moment from 'moment'
 import VeeValidate from 'vee-validate'
 
 
-
 Vue.use(Vuetify)
 Vue.use(VeeValidate)
 Vue.config.productionTip = false

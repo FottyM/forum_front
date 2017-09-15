@@ -1,6 +1,6 @@
 <template>
   <div>
-    User profile
+    {{currentUser.user }}
   </div>
 </template>
 <script>
@@ -10,10 +10,7 @@
   export default {
     name: 'Profile',
     computed:{
-      ...mapGetters(['authToken'])
-    },
-    create(){
-      axios.get(`${API_URL}/users`)
+      ...mapGetters(['currentUser'])
     }
   }
 

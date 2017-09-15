@@ -19,7 +19,6 @@
       return {}
     },
     created(){
-      console.log(this.$store )
       this.$store.dispatch('removeCurrentUser', null )
       this.$store.dispatch('removeToken', null )
       this.$router.push({name: 'login'})

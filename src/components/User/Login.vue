@@ -46,11 +46,7 @@
           email:    this.email,
           password: this.password
         }
-        let header = {
-          headers:{
-            'Authorization': ''
-          }
-        }
+
         axios.post(`${API_URL}/authenticate`, userParams)
           .then( res => {
             let authToken = res.data

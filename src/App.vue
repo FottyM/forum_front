@@ -7,7 +7,7 @@
         <v-list-tile avatar>
           <v-list-tile-avatar>
             <template v-if="currentUser">
-              {{currentUser.user.username | initiales }}
+              {{currentUser.username | initiales }}
             </template>
             <template v-else>
               FM
@@ -16,7 +16,7 @@
           <v-list-tile-content>
             <v-list-tile-title>
               <template v-if="currentUser">
-                {{ currentUser.user.username }}
+                {{ currentUser.username }}
               </template>
               <template v-else>
                 Please Login
@@ -57,16 +57,6 @@
         {{ item.title }}
       </v-btn>
     </v-toolbar-items>
-    <!--<v-menu bottom right>-->
-      <!--<v-btn icon slot="activator" dark>-->
-        <!--<v-icon>more_vert</v-icon>-->
-      <!--</v-btn>-->
-      <!--<v-list>-->
-        <!--<v-list-tile v-for="item in menuItems" :key="item.title" @click="">-->
-          <!--<v-list-tile-title >{{ item.title }} -> </v-list-tile-title>-->
-        <!--</v-list-tile>-->
-      <!--</v-list>-->
-    <!--</v-menu>-->
   </v-toolbar>
   <!--End of toolbar-->
 
@@ -90,7 +80,10 @@
 </template>
 
 <script>
+  import axios from 'axios'
   import { mapGetters } from 'vuex'
+
+
 export default {
   data() {
     return {
@@ -126,9 +119,6 @@ export default {
   },
   computed:{
     ...mapGetters(['currentUser'])
-  },
-  methods: {
-
   },
   filters:{
     initiales(username){

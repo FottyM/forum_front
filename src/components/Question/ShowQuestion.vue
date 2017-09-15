@@ -6,16 +6,16 @@
       <v-card flat>
         <v-card-title>
           <div>
-            <h4 title class="primary--text"> {{ currentQuestion.title }} </h4>
-            <p class="grey--text">Author Name</p>
+            <h4 title class="primary--text"> {{ currentQuestion.question.title }} </h4>
+            <h6 class="grey--text">By: {{ currentQuestion.author }}</h6>
           </div>
         </v-card-title>
         <v-card-text>
-          <p> {{ currentQuestion.body }} </p>
+          <p> {{ currentQuestion.question.body }} </p>
         </v-card-text>
         <v-card-actions dark>
           <v-icon>access_time</v-icon>
-          <span class="grey--text"> {{ currentQuestion.created_at | timeAgo }}</span>
+          <span class="grey--text"> {{ currentQuestion.question.created_at | timeAgo }}</span>
           <!--<v-btn flat>-->
           <!--<v-icon left>comment</v-icon>-->
           <!--40-->
@@ -25,11 +25,11 @@
             30
           </v-btn>
           <v-spacer></v-spacer>
-          <v-btn flat :to="{name: 'editquestion', parmas:{id: currentQuestion.id }}">
+          <v-btn flat :to="{name: 'editquestion', parmas:{id: currentQuestion.question.id }}">
             <v-icon left>edit</v-icon>
             Edit
           </v-btn>
-          <v-btn flat @click="deleteCurrentQuestion(currentQuestion)">
+          <v-btn flat @click="deleteCurrentQuestion(currentQuestion.question)">
             <v-icon left>delete</v-icon>
             Delete
           </v-btn>
@@ -139,7 +139,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['questions', 'currentQuestion', 'currentAnswers']),
+    ...mapGetters(['questions', 'currentQuestion', 'currentAnswers', 'currentUser', 'authToken']),
     isEmpty() {
       return this.comment === ''
     }

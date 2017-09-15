@@ -45,6 +45,7 @@
 
 <script>
   import axios from 'axios'
+  import { mapGetters } from 'vuex'
   import API_URL from '../../configs/api'
 
   export default {
@@ -56,9 +57,9 @@
         errors: []
       }
     },
-    computed:{
+    computed:{ ...mapGetters(['authToken', 'currentUser']),
       isEmpty(){
-//        return ( this.title.length <= 3 && this.body.length <= 0 )
+        return ( this.title.length <= 3 && this.body.length <= 0 )
       }
     },
     methods:{
@@ -71,9 +72,11 @@
         }
 
         if( !this.isEmpty ){
-          axios.post(`${API_URL}/questions`, questionParams )
+          let id = this.currentUser.id
+
+          let headers = {headers :{'Authorization': this.authToken } }
+          axios.post(`${API_URL}/questions`, questionParams, headers )
             .then( res =>{
-              console.log(res)
               this.$store.dispatch('addQuestion', res.data )
               this.$router.push({name:'showquestion', params:{id: res.data.id }})
               this.content = ''
