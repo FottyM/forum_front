@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import createPersistedState from 'vuex-persistedstate'
+import jwtDecode from 'jwt-decode'
 
 Vue.use(Vuex);
 
@@ -10,7 +11,9 @@ const store = new Vuex.Store({
     currentUser: null,
     questions: null,
     currentQuestion: null,
-    currentAnswers: null
+    currentAnswers: null,
+    authToken: null,
+    loggedin: false
   },
 
   mutations: {
@@ -27,20 +30,38 @@ const store = new Vuex.Store({
       state.currentAnswers = data
     },
     ADD_COMMENT_TO_CURRENT_QUESTION(state, data) {
-      state.currentAnswers.splice(0, 0, data)
+      state.currentAnswers.answers.splice(0, 0, data )
     },
     REMOVE_COMMENT_FROM_CURRENT_QUESTION(state, id) {
-      let { currentAnswers } = state ;
-      currentAnswers = currentAnswers.filter( answer => answer.id !== id )
-      state.currentAnswers = currentAnswers
+      let { currentAnswers } = state
+      currentAnswers = currentAnswers.answers.filter( answer => answer.id !== id )
+      state.currentAnswers.answers = currentAnswers
     },
     UPDATE_CURRENT_COMMENT(state, data){
-      let { currentAnswers } = state;
-      currentAnswers = currentAnswers.filter( answer => answer.id !== data.id )
+      let { currentAnswers } = state
+      currentAnswers = currentAnswers.answers.filter( answer => answer.id !== data.id )
       currentAnswers.unshift(data)
-      state.currentAnswers = currentAnswers
-
+      state.currentAnswers.answers = currentAnswers
+    },
+    SET_AUTH_TOKEN(state, token ){
+      state.authToken = token.auth_token;
+    },
+    SET_CURRENT_USER(state, token){
+      state.currentUser = jwtDecode(token.auth_token)
+    },
+    REMOVE_CURRENT_USER( state, data){
+      state.currentUser = data
+    },
+    REMOVE_TOKEN( state, data ){
+      state.authToken = data
+    },
+    LOG_OUT(state, data ){
+      state.loggedin = data
+    },
+    LOG_IN(state, data ){
+      state.loggedin = data
     }
+
   },
 
   actions: {
@@ -64,13 +85,28 @@ const store = new Vuex.Store({
     },
     updateCurrentComment({ commit }, data){
       commit('UPDATE_CURRENT_COMMENT', data)
+    },
+    setAuthToken({ commit }, token){
+      commit('SET_AUTH_TOKEN', token )
+    },
+    setCurrentUser({ commit }, token ){
+      commit('SET_CURRENT_USER', token)
+    },
+    removeCurrentUser({ commit }, data ){
+      commit('REMOVE_CURRENT_USER', data )
+    },
+    removeToken({ commit }, data ){
+      commit('REMOVE_TOKEN', data )
     }
   },
 
   getters: {
     questions: state => state.questions,
     currentQuestion: state => state.currentQuestion,
-    currentAnswers: state => state.currentAnswers
+    currentAnswers: state => state.currentAnswers,
+    authToken: state => state.authToken,
+    currentUser: state => state.currentUser,
+    loggedin: state => state.loggedin
   }
 
 });

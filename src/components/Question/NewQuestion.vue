@@ -1,5 +1,10 @@
 <template>
   <v-container fluid>
+    <div>
+      <v-alert :success="success" :info="info" :error="error" dismissible v-model="alert">
+        {{ message }}
+      </v-alert>
+    </div>
     <v-layout row wrap>
       <v-flex xs12 md8 offset-md2>
         <v-card>
@@ -29,7 +34,7 @@
                   label="Message"
                   v-model="body"
                   counter
-                  max="120"
+                  max="800"
                   full-width
                   multi-line
                   single-line
@@ -45,6 +50,7 @@
 
 <script>
   import axios from 'axios'
+  import { mapGetters } from 'vuex'
   import API_URL from '../../configs/api'
 
   export default {
@@ -52,32 +58,57 @@
     data(){
       return{
         title: "",
-        body:""
+        body:"",
+        errors: [],
+        dialog: false,
+        alert: false,
+        success: false,
+        info: false,
+        error: false,
+        message: ''
       }
     },
-    computed:{
+    computed:{ ...mapGetters(['authToken', 'currentUser']),
       isEmpty(){
-        return ( this.title.length <= 0 && this.body.length <= 0 )
+        return ( this.title.length <= 3 && this.body.length <= 0 )
       }
-    },updated(){
-      console.log(this.isEmpty)
     },
     methods:{
       postQuestion(){
         let questionParams = {
-          title: this.title,
-          body: this.body
+          question:{
+            title: this.title,
+            body: this.body
+          }
         }
+
         if( !this.isEmpty ){
-          axios.post(`${API_URL}/questions`, questionParams )
+          let id = this.currentUser.id
+
+          let headers = {headers :{'Authorization': this.authToken } }
+          axios.post(`${API_URL}/questions`, questionParams, headers )
             .then( res =>{
               this.$store.dispatch('addQuestion', res.data )
               this.$router.push({name:'showquestion', params:{id: res.data.id }})
               this.content = ''
               this.title = ''
+              this.alert = true
+              this.success =  true
+              this.info = false
+              this.error = false
+              this.message = 'Question posted successfully'
+
             })
             .catch( error => {
-              console.log(error)
+              this.errors.push( error.response.data )
+             console.error( error.response.data )
+              this.content = ''
+              this.title = ''
+              this.alert = true
+              this.success =  true
+              this.info = false
+              this.error = false
+              this.message = error.response.data
             })
         }
 

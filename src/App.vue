@@ -1,17 +1,45 @@
 <template>
 <v-app light>
   <!--Navigation drawer-->
-  <v-navigation-drawer persistent v-model="drawer" light enable-resize-watcher overflow>
-    <v-list>
-      <v-list-tile v-for="item in menuItems" :key=" item.title ">
+  <v-navigation-drawer absolute persistent :mini-variant.sync="mini" light v-model="drawer" overflow>
+    <v-toolbar flat class="transparent">
+      <v-list class="pa-0">
+        <v-list-tile avatar>
+          <v-list-tile-avatar>
+            <template v-if="currentUser">
+              {{currentUser.username | initiales }}
+            </template>
+            <template v-else>
+              FM
+            </template>
+          </v-list-tile-avatar>
+          <v-list-tile-content>
+            <v-list-tile-title>
+              <template v-if="currentUser">
+                {{ currentUser.username }}
+              </template>
+              <template v-else>
+                Please Login
+              </template>
+            </v-list-tile-title>
+          </v-list-tile-content>
+        </v-list-tile>
+      </v-list>
+    </v-toolbar>
+    <v-list class="pt-0" dense>
+      <v-divider></v-divider>
+      <v-list-tile v-for="item in menuItems" :key="item.title" :to="item.link" v-if=" item.loggedin === loggedin" >
         <v-list-tile-action>
-          <v-icon> {{ item.icon }} </v-icon>
+          <v-icon>{{ item.icon }}</v-icon>
         </v-list-tile-action>
-        <v-list-tile-content> {{ item.title }} </v-list-tile-content>
+        <v-list-tile-content>
+          <v-list-tile-title> {{ item.title }}</v-list-tile-title>
+        </v-list-tile-content>
       </v-list-tile>
     </v-list>
   </v-navigation-drawer>
   <!--End of navigation drawer -->
+
 
   <!--Toolbar starts here-->
   <v-toolbar dark class="primary">
@@ -24,21 +52,11 @@
     </v-toolbar-title>
     <v-spacer></v-spacer>
     <v-toolbar-items class="hidden-sm-and-down">
-      <v-btn flat v-for="item in navItems" :key="item.title" router :to="item.link">
-        <v-icon left dark> {{item.icon}} </v-icon>
-        {{ item.title }}
+      <v-btn flat v-for="item in menuItems" :key="item.title" router :to="item.link" v-if=" item.loggedin === loggedin">
+          <v-icon left dark> {{item.icon}} </v-icon>
+          {{ item.title }}
       </v-btn>
     </v-toolbar-items>
-    <v-menu bottom right>
-      <v-btn icon slot="activator" dark>
-        <v-icon>more_vert</v-icon>
-      </v-btn>
-      <v-list>
-        <v-list-tile v-for="item in menuItems" :key="item.title" @click="">
-          <v-list-tile-title >{{ item.title }} -> </v-list-tile-title>
-        </v-list-tile>
-      </v-list>
-    </v-menu>
   </v-toolbar>
   <!--End of toolbar-->
 
@@ -62,41 +80,55 @@
 </template>
 
 <script>
+  import axios from 'axios'
+  import { mapGetters } from 'vuex'
+
+
 export default {
   data() {
     return {
+      mini: false,
       drawer: false,
       menuItems: [{
           icon: 'lock_outline',
           title: 'Log out',
-          link: '/logout'
+          link: '/logout',
+          loggedin: true
         },
         {
           icon: 'lock_open',
           title: 'Log in',
-          link: '/login'
+          link: '/login',
+          loggedin: false
         },
         {
           icon: 'face',
           title: 'Register',
-          link: '/register'
+          link: '/register',
+          loggedin: false
         },
-      ],
-      navItems: [{
+        {
           icon: 'create',
           title: 'New Question',
-          link: '/questions/new'
+          link: '/questions/new',
+          loggedin: true
         },
         {
           icon: 'face',
           title: 'Profile',
-          link: ''
+          link: '/profile',
+          loggedin: true
         },
       ]
     }
   },
-  methods: {
-
+  computed:{
+    ...mapGetters(['currentUser', 'loggedin'])
+  },
+  filters:{
+    initiales(username){
+      return username[0].toLocaleUpperCase()
+    }
   }
 }
 </script>
