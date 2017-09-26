@@ -48,7 +48,7 @@
     <v-flex xs10 offset-xs1>
       <v-card title class="cyan darken-4 white--text">
         <v-card-title>
-          <h5 class="body-3">{{ currentAnswers.answers.length }} comments </h5>
+          <h5 class="body-3">{{ currentAnswers.length }} comments </h5>
         </v-card-title>
         <v-card-text>
           <v-form>
@@ -69,7 +69,7 @@
     <v-flex xs10 offset-xs1 v-for=" answer in currentAnswers.answers" :key=" answer.id">
       <v-card flat>
         <v-card-title>
-          <span class="grey--text">Author or the comment</span>
+          <span class="grey--text"> <strong>By:</strong> {{ answer.author }} </span>
         </v-card-title>
         <v-card-text> {{ answer.content }} </v-card-text>
 
@@ -186,11 +186,14 @@ export default {
           console.error(error.response.data)
         })
     },
-     postAnswer(){
-
+    postAnswer() {
       let questionId = this.currentQuestion.question.id
       let userId = this.currentUser.user_id
-      let headers  = { headers : { 'Authorization' : this.authToken } }
+      let headers = {
+        headers: {
+          'Authorization': this.authToken
+        }
+      }
 
       let answerParams = {
         content: this.comment,
@@ -199,11 +202,11 @@ export default {
       }
 
       if (!this.isEmpty) {
-      axios.post(`${API_URL}/questions/${questionId}/answers/`, answerParams, headers )
+        axios.post(`${API_URL}/questions/${questionId}/answers/`, answerParams, headers)
           .then(res => {
             let data = res.data
-            if (typeof data !== 'undefined' ){
-              this.$store.dispatch('addCommentToCurrentQuestion', data )
+            if (typeof data !== 'undefined') {
+              this.$store.dispatch('addCommentToCurrentQuestion', data)
               this.comment = ''
               this.alert = true
               this.success = true
@@ -211,8 +214,8 @@ export default {
             }
           })
           .catch(error => {
-            this.errors.push(error.response.data )
-            console.log(error.response.data )
+            this.errors.push(error.response.data)
+            console.log(error.response.data)
           })
       } else {
         this.errors.push("Can't do that")
@@ -230,45 +233,63 @@ export default {
       let updateContent = this.commentToEdit
       let answerId = this.tempAnswerId
       let userID = this.currentUser.user_id
-      let headers  = { headers : { 'Authorization' : this.authToken } }
+      let headers = {
+        headers: {
+          'Authorization': this.authToken
+        }
+      }
       this.dialog = false
 
-      axios.put(`${API_URL}/questions/${questionId}/answers/${answerId}`, {content: updateContent, user_id: userID}, headers )
+      axios.put(`${API_URL}/questions/${questionId}/answers/${answerId}`, {
+          content: updateContent,
+          user_id: userID
+        }, headers)
         .then(res => {
-          this.$store.dispatch('updateCurrentComment', res.data ) })
-          this.alert = true
-          this.success = true
-          this.info = false
-          this.error = false
-          this.message = 'Comment updated successfully'
+          this.$store.dispatch('updateCurrentComment', res.data)
+        })
+      this.alert = true
+      this.success = true
+      this.info = false
+      this.error = false
+      this.message = 'Comment updated successfully'
         .catch(error => {
           this.alert = true
           this.error = true
           this.success = false
           this.info = false
-          this.message = 'Comment: ' + error.response.data  + ', updated successfully'
+          this.message = 'Comment: ' + error.response.data + ', updated successfully'
           console.log(error.response.data)
         })
     },
 
-    deleteCurrentQuestion(currentQuestion){
+    deleteCurrentQuestion(currentQuestion) {
       let id = currentQuestion.id
-      let headers  = { headers : { 'Authorization' : this.authToken } }
+      let headers = {
+        headers: {
+          'Authorization': this.authToken
+        }
+      }
 
-      axios.delete(`${API_URL}/questions/${id}`, headers )
-        .then( res =>{
-          this.$router.push({ name: 'home'})
+      axios.delete(`${API_URL}/questions/${id}`, headers)
+        .then(res => {
+          this.$router.push({
+            name: 'home'
+          })
         })
-        .catch( error => {
-          console.log(error.response.data )
+        .catch(error => {
+          console.log(error.response.data)
         })
     },
     deleteAnswer(answer) {
-      let headers  = { headers : { 'Authorization' : this.authToken } }
+      let headers = {
+        headers: {
+          'Authorization': this.authToken
+        }
+      }
       let questionId = this.currentQuestion.question.id
       let answerId = answer.id
 
-      axios.delete(`${API_URL}/questions/${questionId}/answers/${answerId}`, headers ).then(
+      axios.delete(`${API_URL}/questions/${questionId}/answers/${answerId}`, headers).then(
         res => {
           this.$store.dispatch('removeCommentFromCurrentQuestion', res.data.id)
           confirm('Want to delete')
