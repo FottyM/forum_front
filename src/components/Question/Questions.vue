@@ -1,16 +1,16 @@
 <template>
 <v-layout row wrap>
-  <v-flex xs10 offset-xs1 v-for="question in questions" :key="question.id">
+  <v-flex xs12 md10 offset-md1 v-for="question in questions" :key="question.id">
     <v-card title flat>
       <v-card-title primary-title>
-        <div v-if=" questions === null ">
+        <div v-if=" questions === [] ">
           Kept you waiting huh!
         </div>
         <div v-else>
-          <span class="grey--text">Author Name</span><br>
           <router-link class="question-title" :to="{ name: 'showquestion', params: { id: question.id }}">
             <h2 class="headline primary--text"> {{ question.title }} </h2>
           </router-link>
+          <span class="orange--text"><strong>By: </strong>{{question.author}}</span>
           <p> {{ question.body | sliceAndDice }}</p>
         </div>
       </v-card-title>
@@ -20,12 +20,14 @@
           {{ question.created_at | timeAgo }}
         </p>
         <v-spacer></v-spacer>
-        <v-btn icon>
-          <v-icon>favorite</v-icon>
-        </v-btn>
-        <v-btn icon>
-          <v-icon>comment</v-icon>
-        </v-btn>
+        <!-- <v-btn icon> -->
+          <v-icon left class="red--text">favorite</v-icon>
+          {{ 1500 | friendlyNumber}}
+        <!-- </v-btn> -->
+        <!-- <v-btn icon> -->
+          <v-icon left>comment</v-icon>
+          {{ question.answers_count | friendlyNumber }}
+        <!-- </v-btn> -->
         <!--<v-btn icon>-->
         <!--<v-icon>share</v-icon>-->
         <!--</v-btn>-->

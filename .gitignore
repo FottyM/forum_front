@@ -150,5 +150,3 @@ typings/
 .env
 .idea
 .idea/
-
-/src/filters.js
